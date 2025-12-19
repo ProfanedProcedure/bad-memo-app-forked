@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block title %}メモ一覧{% endblock %}
+{% block content %}
+  {% if legacy %}
+    <div class="alert">
+      <strong>旧検索モード(legacy=1)</strong>：教材用に“危険/壊れやすい実装”が動作しています。
+      （例：<code>'</code> を含む検索で落ちる等）
+    </div>
+  {% endif %}
+
+  <div class="card">
+    <form method="get" class="row">
+      <input type="text" name="q" placeholder="検索（タイトル/本文）" value="{{ q|default:'' }}" />
+      <input type="text" name="tag" placeholder="タグ（1つ）" value="{{ tag|default:'' }}" />
+      <select name="sort">
+        <option value="new" {% if sort == "new" %}selected{% endif %}>新しい順</option>
+        <option value="old" {% if sort == "old" %}selected{% endif %}>古い順</option>
+        <option value="title" {% if sort == "title" %}selected{% endif %}>タイトル</option>
+      </select>
+
+
+      <button class="btn" type="submit">絞り込み</button>
+      <a class="btn secondary" href="/">リセット</a>
+    </form>
+  </div>
+
+  <div class="grid">
+    {% for memo in memos %}
+      <a class="card link" href="/memos/{{ memo.id }}/">
+        <div class="card-title">{{ memo.title }}</div>
+        <div class="muted small">{{ memo.created_at|date:"Y-m-d H:i" }}</div>
+        <div class="tags">
+          {% for t in memo.tags.all %}
+            <span class="tag">#{{ t.name }}</span>
+          {% endfor %}
+        </div>
+        <p class="small">{{ memo.preview }}</p>
+      </a>
+    {% empty %}
+      <div class="card">メモがありません</div>
+    {% endfor %}
+  </div>
+{% endblock %}

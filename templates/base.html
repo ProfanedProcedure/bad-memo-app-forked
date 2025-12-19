@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>{% block title %}Memo Lab{% endblock %}</title>
+  <link rel="stylesheet" href="/static/app.css" />
+</head>
+<body>
+  <header class="header">
+    <div class="container">
+      <h1 class="brand"><a href="/">Memo Lab</a></h1>
+      <nav class="nav">
+        <a class="btn" href="/memos/new/">＋ 新規メモ</a>
+      </nav>
+    </div>
+  </header>
+  <main class="container">
+    {% if messages %}
+      <ul class="messages">
+        {% for message in messages %}
+          <li class="message {{ message.tags }}">{{ message }}</li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+    {% block content %}{% endblock %}
+  </main>
+  <footer class="footer">
+    <div class="container small">教材用（意図的なバグあり v2）</div>
+  </footer>
+</body>
+</html>
