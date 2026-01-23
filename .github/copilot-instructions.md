@@ -168,7 +168,7 @@ See `BUG_CATALOG.md` for complete list with difficulty ratings.
 
 **Adding a new view:**
 1. Add function to `memos/views.py`
-2. Add URL pattern to `memos/urls.py` (if exists) or `memo_project/urls.py`
+2. Add URL pattern to `memo_project/urls.py`
 3. Create template in `templates/memos/`
 4. Add test to `memos/tests/test_views.py`
 5. Run tests
