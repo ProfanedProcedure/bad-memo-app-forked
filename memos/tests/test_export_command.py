@@ -6,15 +6,14 @@ from io import StringIO
 from pathlib import Path
 
 from django.core.management import call_command
-from django.test import TestCase, TransactionTestCase
-from django.test.utils import override_settings
+from django.test import TestCase
 from django.db import connection
 from django.test.utils import CaptureQueriesContext
 
 from memos.models import Memo, Tag
 
 
-class ExportMemosCommandTests(TransactionTestCase):
+class ExportMemosCommandTests(TestCase):
     """Test the export_memos management command."""
 
     def setUp(self):

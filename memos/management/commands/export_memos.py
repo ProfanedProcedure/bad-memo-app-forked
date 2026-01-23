@@ -37,9 +37,6 @@ class Command(BaseCommand):
         try:
             # Use prefetch_related to avoid N+1 query problem
             memos = Memo.objects.prefetch_related("tags").all()
-            memo_count = memos.count()
-
-            self.stdout.write(f"Exporting {memo_count} memos...")
 
             # Build export data
             out = []
@@ -50,6 +47,8 @@ class Command(BaseCommand):
                     "body": m.body,
                     "tags": [t.name for t in m.tags.all()],
                 })
+
+            self.stdout.write(f"Exporting {len(out)} memos...")
 
             # Validate output path
             output_file = Path(output_path)
