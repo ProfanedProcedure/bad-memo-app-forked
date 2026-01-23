@@ -1,5 +1,5 @@
 from django.http import HttpRequest, HttpResponse
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.db.models import Q
 
@@ -56,7 +56,7 @@ def memo_list(request: HttpRequest) -> HttpResponse:
 
 
 def memo_detail(request: HttpRequest, memo_id: int) -> HttpResponse:
-    memo = Memo.objects.get(id=memo_id)  # 怪しいところ: 404にならない
+    memo = get_object_or_404(Memo, id=memo_id)
     return render(request, "memos/memo_detail.html", {"memo": memo})
 
 
@@ -83,7 +83,7 @@ def create_memo(request: HttpRequest) -> HttpResponse:
 
 def edit_memo(request: HttpRequest, memo_id: int) -> HttpResponse:
     error = None
-    memo = Memo.objects.get(id=memo_id)  # 怪しいところ: 404にならない
+    memo = get_object_or_404(Memo, id=memo_id)
 
     if request.method == "POST":
         title = (request.POST.get("title") or "").strip()
@@ -111,10 +111,7 @@ def edit_memo(request: HttpRequest, memo_id: int) -> HttpResponse:
 
 def delete_memo(request: HttpRequest, memo_id: int) -> HttpResponse:
     # 怪しいところ: POST 以外でも削除できる（教材で直す）
-    try:
-        memo = Memo.objects.get(id=memo_id)
-        memo.delete()
-        messages.success(request, "削除しました")
-    except Exception:
-        messages.error(request, "削除に失敗しました")
+    memo = get_object_or_404(Memo, id=memo_id)
+    memo.delete()
+    messages.success(request, "削除しました")
     return redirect("memo_list")
